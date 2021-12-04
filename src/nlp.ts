@@ -29,3 +29,5 @@ const getSentiment = (str: String): -1 | 0 | 1 => {
     else if(analyzed === 0) return 0;
     else return -1;
 };
+
+export default getSentiment;
