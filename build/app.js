@@ -12,7 +12,7 @@ app.use((0, cors_1.default)({
     origin: "http://localhost:3000"
 }));
 const port = process.env.PORT || 4000;
-app.listen(4000, () => {
+app.listen(port, () => {
     console.log("server run port 4000");
 });
 app.get("/health", (req, res) => {
