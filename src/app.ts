@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import getSentiment from "./nlp";
 
 const app = express();
 
@@ -14,3 +15,16 @@ app.use(
 app.listen(4000, () => {
     console.log("server run port 4000")
 });
+
+app.get("/health", (req,res) => {
+    res.send(200)
+})
+
+app.post("/api/sentiment", (req, res) => {
+
+    const { data } = req.body;
+
+    const sentiment = getSentiment(data);
+
+    return res.send({sentiment});
+})
