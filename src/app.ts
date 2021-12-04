@@ -1,36 +1,16 @@
-// @ts-ignore
-import aposToLexForm from "apos-to-lex-form"
-import { WordTokenizer, SentimentAnalyzer, PorterStemmer } from "natural"
-// @ts-ignore
-import SpellCorrector from "spelling-corrector";
-import stopword from "stopword";
+import express from "express";
+import cors from "cors";
 
-const tokenizer = new WordTokenizer();
-const spellCorrector = new SpellCorrector();
-spellCorrector.loadDictionary();
+const app = express();
 
-const analyzer = new SentimentAnalyzer("English", PorterStemmer, "afinn")
+app.use(express.json());
 
-const getSentiment = (str: String): -1 | 0 | 1 => {
-    if (!str.trim()) {
-        return 0;
-    }
-    const lexed = aposToLexForm(str).toLowerCase().replace(/[^a-zA-Z\s]+/g, "");
+app.use(
+    cors({
+            origin: "http://localhost:3000"
+        })
+);
 
-    const tokenized = tokenizer.tokenize(lexed);
-
-    const fixedSpelling = tokenized.map((word) => spellCorrector.correct(word));
-
-    const stopWordsRemoved = stopword.removeStopwords(fixedSpelling);
-
-    const analyzed = analyzer.getSentiment(stopWordsRemoved);
-
-    console.log(stopWordsRemoved);
-
-    if (analyzed >= 1) return 1;
-    else if(analyzed === 0) return 0;
-    else return -1;
-}
-
-console.log(getSentiment("This is awesome!"));
-console.log(getSentiment("I do not like this weather because it is bad"))
+app.listen(4000, () => {
+    console.log("server run port 4000")
+});
